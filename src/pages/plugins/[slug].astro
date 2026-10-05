@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import plugins from '../../data/plugins.json';
+
+export function getStaticPaths() {
+  return plugins.map((p) => ({ params: { slug: p.slug }, props: { plugin: p } }));
+}
+
+const { plugin } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<Base title={plugin.title} description={plugin.description}>
+  <h1>{plugin.title}</h1>
+  <p>{plugin.description}</p>
+  <div class="meta">
+    <span class="tag">{plugin.category}</span>
+    <span>v{plugin.version}</span>
+    <span>{plugin.size_mb} MB</span>
+    <time datetime={plugin.date}>{plugin.date}</time>
+  </div>
+  <p><a class="btn" href={plugin.download_url}>Download release</a></p>
+  <p><a href={`${base}catalog/`}>Back to catalog</a></p>
+</Base>
