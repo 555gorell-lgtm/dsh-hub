@@ -1,31 +1,47 @@
-﻿---
-import Base from '../layouts/Base.astro';
-import PluginCard from '../components/PluginCard.astro';
-import plugins from '../data/plugins.json';
-const categories = [...new Set(plugins.map(p => p.category))];
----
-<Base title="Каталог — PluginHub">
-  <h1>Каталог плагинов</h1>
+import json, os, urllib.request
 
-  <div class="filters">
-    <button class="filter active" data-cat="">Все</button>
-    {categories.map(c => <button class="filter" data-cat={c}>{c}</button>)}
-  </div>
+REPO = "555gorell-lgtm/dshhub"
+OUT = "src/data/plugins.json"
+TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
-  <div class="grid" id="catalog">
-    {plugins.map(p => <PluginCard plugin={p} />)}
-  </div>
-</Base>
+def fetch(url):
+    req = urllib.request.Request(url)
+    if TOKEN:
+        req.add_header("Authorization", f"Bearer {TOKEN}")
+    with urllib.request.urlopen(req) as r:
+        return json.load(r)
 
-<script>
-  document.querySelectorAll('.filter').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat = btn.dataset.cat;
-      document.querySelectorAll('#catalog .card').forEach(card => {
-        card.style.display = (!cat || card.dataset.category === cat) ? '' : 'none';
-      });
-    });
-  });
-</script>
+try:
+    plugins = json.load(open(OUT, encoding="utf-8"))
+except Exception:
+    plugins = []
+if not isinstance(plugins, list):
+    plugins = []
+known = {p["slug"]: p for p in plugins}
+releases = fetch(f"https://api.github.com/repos/{REPO}/releases")
+
+new_count = 0
+for rel in releases:
+    assets = rel.get("assets", [])
+    if not assets:
+        continue
+    slug = rel["tag_name"].lower().replace("/", "-")
+    asset = assets[0]
+    plugin = {
+        "slug": slug,
+        "title": rel.get("name") or slug,
+        "description": ((rel.get("body") or "").splitlines()[0][:200]) if rel.get("body") else f"Plugin {slug}",
+        "category": known.get(slug, {}).get("category", "tools"),
+        "version": rel["tag_name"],
+        "date": rel["published_at"][:10],
+        "size_mb": round(asset["size"] / 1048576, 1),
+        "download_url": asset["browser_download_url"],
+    }
+    if slug in known:
+        known[slug].update(plugin)
+    else:
+        plugins.append(plugin)
+        new_count += 1
+
+json.dump(plugins, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+print(f"New plugins: {new_count}, total: {len(plugins)}")
