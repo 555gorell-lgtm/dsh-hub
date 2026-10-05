@@ -1,5 +1,6 @@
 ﻿---
 const { title = 'PluginHub', description = 'Каталог плагинов DSH' } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 <!doctype html>
 <html lang="ru">
@@ -12,8 +13,8 @@ const { title = 'PluginHub', description = 'Каталог плагинов DSH'
 <body>
   <header>
     <nav>
-      <a href="/">PluginHub</a>
-      <a href="/catalog/">Каталог</a>
+      <a href={base}>PluginHub</a>
+      <a href={`${base}catalog/`}>Каталог</a>
     </nav>
   </header>
   <main><slot /></main>
