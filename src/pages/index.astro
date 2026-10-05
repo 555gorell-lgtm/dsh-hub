@@ -1,0 +1,20 @@
+﻿---
+import Base from '../layouts/Base.astro';
+import PluginCard from '../components/PluginCard.astro';
+import plugins from '../data/plugins.json';
+
+const featured = plugins.filter(p => p.featured).slice(0, 6);
+---
+<Base title="PluginHub — каталог плагинов DSH">
+  <section class="hero">
+    <h1>PluginHub</h1>
+    <p>Плагины, программы и инструменты для DSH</p>
+  </section>
+
+  <section>
+    <h2>Свежие плагины</h2>
+    <div class="grid">
+      {featured.map(p => <PluginCard plugin={p} />)}
+    </div>
+  </section>
+</Base>
