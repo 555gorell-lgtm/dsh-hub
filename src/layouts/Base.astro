@@ -1,0 +1,22 @@
+﻿---
+const { title = 'PluginHub', description = 'Каталог плагинов DSH' } = Astro.props;
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">PluginHub</a>
+      <a href="/catalog/">Каталог</a>
+    </nav>
+  </header>
+  <main><slot /></main>
+  <footer>© PluginHub · каталог плагинов DSH</footer>
+</body>
+</html>
