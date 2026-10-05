@@ -1,0 +1,26 @@
+﻿[
+  {
+    "slug": "dsh-loader",
+    "title": "DSH Loader",
+    "description": "Загрузчик плагинов DSH с автообновлением и проверкой подписи.",
+    "category": "загрузчик",
+    "version": "2.1.0",
+    "date": "2026-09-28",
+    "download": "https://gh-proxy.com/https://github.com/555gorell-lgtm/dshhub/releases/download/v2.1.0/dsh-loader-2.1.0.zip",
+    "mirror": "",
+    "size_mb": 6.2,
+    "featured": true
+  },
+  {
+    "slug": "map-packer",
+    "title": "Map Packer",
+    "description": "Сборка и упаковка карт для DSH: предпросмотр, оптимизация текстур.",
+    "category": "инструменты",
+    "version": "1.4.2",
+    "date": "2026-09-20",
+    "download": "https://gh-proxy.com/https://github.com/555gorell-lgtm/dshhub/releases/download/v1.4.2/map-packer-1.4.2.zip",
+    "mirror": "",
+    "size_mb": 11.8,
+    "featured": false
+  }
+]
