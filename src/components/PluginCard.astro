@@ -1,9 +1,10 @@
 ﻿---
 const { plugin } = Astro.props;
 const { slug, title, description, category, version, date, size_mb } = plugin;
+const base = import.meta.env.BASE_URL;
 ---
 <article class="card" data-category={category}>
-  <h3><a href={`/plugins/${slug}/`}>{title}</a></h3>
+  <h3><a href={`${base}plugins/${slug}/`}>{title}</a></h3>
   <p>{description}</p>
   <div class="meta">
     <span class="tag">{category}</span>
